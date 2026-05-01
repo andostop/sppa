@@ -125,8 +125,9 @@ p  { color: var(--gris-texto); }
   text-decoration: none; justify-content: center;
 }
 .btn-primary {
-  background: linear-gradient(135deg, var(--verde), var(--verde-osc));
-  color: #fff; box-shadow: 0 4px 16px rgba(29,185,84,0.35);
+  background: var(--verde);
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(29,185,84,0.25);
 }
 .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(29,185,84,0.45); }
 .btn-secondary {
@@ -135,7 +136,7 @@ p  { color: var(--gris-texto); }
 }
 .btn-secondary:hover { background: var(--verde-light); }
 .btn-naranja {
-  background: linear-gradient(135deg, var(--naranja), #e85a20);
+  background: var(--naranja);
   color: #fff; box-shadow: 0 4px 16px rgba(255,107,43,0.30);
 }
 .btn-naranja:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(255,107,43,0.40); }
@@ -165,7 +166,7 @@ p  { color: var(--gris-texto); }
   box-shadow: var(--sombra); padding: 24px;
   transition: transform var(--transition), box-shadow var(--transition);
 }
-.card:hover { transform: translateY(-3px); box-shadow: var(--sombra-lg); }
+.card:hover { box-shadow: var(--sombra-lg); }
 .card-sm { padding: 16px; border-radius: var(--radio-sm); }
 
 /* ---------- BADGES ---------- */
@@ -174,9 +175,6 @@ p  { color: var(--gris-texto); }
   padding: 4px 12px; border-radius: 99px;
   font-size: 0.78rem; font-weight: 600;
 }
-.badge-verde { background: var(--verde-light); color: var(--verde-osc); }
-.badge-naranja { background: var(--naranja-light); color: var(--naranja); }
-.badge-gris { background: var(--gris-fondo); color: var(--gris-texto); }
 
 /* ---------- PROGRESS BAR ---------- */
 .progress-wrap { background: var(--gris-borde); border-radius: 99px; height: 8px; overflow: hidden; }
@@ -227,26 +225,38 @@ p  { color: var(--gris-texto); }
   text-transform: uppercase;
 }
 .hero h1 { color: #fff; margin-bottom: 20px; }
-.hero h1 span { color: var(--verde); }
+.hero h1 span { color: #ffffff; }
 .hero p { color: rgba(255,255,255,0.65); font-size: 1.1rem; margin-bottom: 36px; max-width: 480px; }
 .hero-cta { display: flex; gap: 16px; flex-wrap: wrap; }
 .hero-visual {
   display: flex; flex-direction: column; gap: 16px;
 }
 .hero-card-float {
-  background: rgba(255,255,255,0.07); backdrop-filter: blur(16px);
-  border: 1px solid rgba(255,255,255,0.12); border-radius: var(--radio);
-  padding: 20px; color: #fff;
+  background: rgba(255,255,255,0.07);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: var(--radio);
+
+  padding: 20px;
+  color: #ffffff;
+
   animation: float 4s ease-in-out infinite;
+
+  width: 100%;
+  min-height: 180px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
-.hero-card-float:nth-child(2) { animation-delay: 1s; margin-left: 40px; }
+.hero-card-float:nth-child(2) {  animation-delay: 1s; }
 .hero-card-float:nth-child(3) { animation-delay: 2s; }
 @keyframes float {
   0%,100% { transform: translateY(0); }
   50%      { transform: translateY(-10px); }
 }
-.mini-score { font-family: var(--font-head); font-size: 2rem; font-weight: 800; color: var(--verde); }
-.mini-label { font-size: 0.82rem; opacity: 0.7; }
+.mini-score { font-family: var(--font-head); font-size: 2rem; font-weight: 800; color: #ffffff; }
+.mini-label { font-size: 0.82rem; opacity: 0.9; color: #ffffff;}
 
 /* Features strip */
 .features-strip {
@@ -256,9 +266,7 @@ p  { color: var(--gris-texto); }
 .feature-item {
   background: #fff; border-radius: var(--radio); padding: 28px;
   box-shadow: var(--sombra); border-top: 3px solid transparent;
-  transition: all var(--transition);
 }
-.feature-item:hover { border-top-color: var(--verde); transform: translateY(-4px); }
 .feature-icon {
   width: 52px; height: 52px; border-radius: 14px;
   background: var(--verde-light); display: flex; align-items: center;
@@ -356,7 +364,7 @@ p  { color: var(--gris-texto); }
   box-shadow: var(--sombra); overflow: hidden;
   transition: all var(--transition); cursor: pointer;
 }
-.reco-card:hover { transform: translateY(-5px); box-shadow: var(--sombra-lg); }
+.reco-card:hover { box-shadow: var(--sombra-lg); }
 .reco-card-img {
   height: 140px;
   display: flex; align-items: center; justify-content: center;

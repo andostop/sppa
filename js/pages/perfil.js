@@ -2,35 +2,99 @@ import { Auth } from '../auth.js';
 
 const user = Auth.getSesion();
 
-const cont = document.querySelector('.perfil-cards-grid');
+if (!user) {
+  window.location.href = 'login.html';
+}
 
-if (user && user.plan_alimenticio) {
+// ==========================
+// AVATAR Y NOMBRE
+// ==========================
+const avatar = document.getElementById('perfilAvatar');
+const nombre = document.getElementById('perfilNombre');
 
-  const plan = user.plan_alimenticio;
+const iniciales = user.nombre
+  .split(' ')
+  .map(n => n[0])
+  .join('')
+  .slice(0,2)
+  .toUpperCase();
 
-  cont.innerHTML += `
-    <div class="card">
-      <h3>🥗 Plan Alimenticio</h3>
+avatar.textContent = iniciales;
+nombre.textContent = user.nombre;
 
-      <div class="info-row">
-        <span class="info-key">Dieta</span>
-        <span class="info-val">${plan.tipo_dieta || '-'}</span>
-      </div>
+// ==========================
+// DATOS PERSONALES
+// ==========================
+const datos = document.getElementById('perfilDatos');
 
-      <div class="info-row">
-        <span class="info-key">Región</span>
-        <span class="info-val">${plan.region || '-'}</span>
-      </div>
+datos.innerHTML = `
+  <div class="info-row">
+    <span class="info-key">Correo</span>
+    <span class="info-val">${user.email || '-'}</span>
+  </div>
+`;
 
-      <div class="info-row">
-        <span class="info-key">Presupuesto</span>
-        <span class="info-val">S/${plan.presupuesto_dia || '-'}</span>
-      </div>
+// ==========================
+// PLAN ALIMENTICIO
+// ==========================
+const planBox = document.getElementById('perfilPlan');
 
-      <div class="info-row">
-        <span class="info-key">Objetivo</span>
-        <span class="info-val">${plan.objetivo || '-'}</span>
-      </div>
+const plan = user.plan_alimenticio;
+
+if (!plan) {
+
+  planBox.innerHTML = `
+    <p>Aún no tienes un plan alimenticio registrado.</p>
+  `;
+
+} else {
+
+  planBox.innerHTML = `
+
+    <div class="info-row">
+      <span class="info-key">Edad</span>
+      <span class="info-val">${plan.edad || '-'}</span>
     </div>
+
+    <div class="info-row">
+      <span class="info-key">Sexo</span>
+      <span class="info-val">${plan.sexo || '-'}</span>
+    </div>
+
+    <div class="info-row">
+      <span class="info-key">Peso</span>
+      <span class="info-val">${plan.peso || '-'} kg</span>
+    </div>
+
+    <div class="info-row">
+      <span class="info-key">Altura</span>
+      <span class="info-val">${plan.altura || '-'} cm</span>
+    </div>
+
+    <div class="info-row">
+      <span class="info-key">Tipo de dieta</span>
+      <span class="info-val">${plan.tipo_dieta || '-'}</span>
+    </div>
+
+    <div class="info-row">
+      <span class="info-key">Región</span>
+      <span class="info-val">${plan.region || '-'}</span>
+    </div>
+
+    <div class="info-row">
+      <span class="info-key">Objetivo</span>
+      <span class="info-val">${plan.objetivo || '-'}</span>
+    </div>
+
+    <div class="info-row">
+      <span class="info-key">Alergias</span>
+      <span class="info-val">${plan.alergias_salud || '-'}</span>
+    </div>
+
+    <div class="info-row">
+      <span class="info-key">Presupuesto diario</span>
+      <span class="info-val">S/ ${plan.presupuesto_dia || '-'}</span>
+    </div>
+
   `;
 }

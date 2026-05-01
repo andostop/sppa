@@ -8,7 +8,7 @@ export function renderNavbar(paginaActual = '') {
 
   const links = [
     { href: 'index.html', label: 'Inicio' },
-    { href: 'dashboard.html', label: 'Dashboard', auth: true },
+    { href: 'dashboard.html', label: 'Mi Actividad', auth: true },
     { href: 'recomendaciones.html', label: 'Recomendaciones', auth: true },
     { href: 'plan.html', label: 'Plan Alimenticio', auth: true } // 👈 NUEVO
   ];

@@ -3,55 +3,114 @@ import { SPPA_Model } from '../model.js';
 
 const user = Auth.getSesion();
 
-function generarRecomendaciones() {
-  if (!user || !user.registros_diarios || user.registros_diarios.length === 0) return;
+const cont =
+  document.getElementById('recoContainer');
 
-  const ultimo = user.registros_diarios.slice(-1)[0];
+// =====================================
+// FORMATEAR FECHA
+// =====================================
+function formatearFecha(fecha) {
 
-  const recos = SPPA_Model.recomendar(user);
+  const f = new Date(fecha);
 
-  // 🔥 MATCH POR INGREDIENTES (MEJORADO)
-  const resultados = recos.map(plato => {
-
-    const match = plato.ingredientes.filter(i =>
-      ultimo.ingredientes.some(userIng =>
-        userIng.trim().toLowerCase().includes(i.toLowerCase())
-      )
-    ).length;
-
-    return {
-      ...plato,
-      score_final: plato.probabilidad_aceptacion + (match * 0.05)
-    };
-  })
-  .sort((a,b)=>b.score_final - a.score_final)
-  .slice(0,6); // top 6
-
-  guardarHistorial(resultados);
-  render(resultados);
-}
-
-function guardarHistorial(recos) {
-  const historial = user.historial_recomendaciones || [];
-
-  historial.push({
-    fecha: new Date().toISOString(),
-    platos: recos
+  return f.toLocaleDateString('es-PE', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric'
   });
 
-  Auth.actualizarSesion({ historial_recomendaciones: historial });
 }
 
-function render(recos) {
-  const cont = document.getElementById('recoContainer');
+// =====================================
+// GENERAR HISTORIAL
+// =====================================
+function generarHistorial() {
 
-  cont.innerHTML = recos.map(r => `
-    <div class="card">
-      <h3>${r.emoji} ${r.nombre_plato}</h3>
-      <p>Score: ${Math.round(r.score_final * 100)}%</p>
-      <p>Precio: S/${r.precio}</p>
-    </div>
-  `).join('');
+  if (
+    !user ||
+    !user.registros_diarios ||
+    user.registros_diarios.length === 0
+  ) {
+
+    cont.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">🍽️</div>
+        <h3>No existen registros todavía</h3>
+      </div>
+    `;
+
+    return;
+  }
+
+  // MÁS RECIENTE ARRIBA
+  const registros =
+    [...user.registros_diarios]
+    .reverse();
+
+  cont.innerHTML =
+    registros.map(registro => {
+
+      // recomendaciones del día
+      const recomendaciones =
+        SPPA_Model
+          .recomendarPorRegistro(
+            user,
+            registro
+          )
+          .slice(0,3);
+
+      return `
+
+        <div class="card" style="margin-bottom:24px;">
+
+          <h3 style="margin-bottom:12px;">
+            📅 ${formatearFecha(registro.fecha)}
+          </h3>
+
+          <p style="margin-bottom:18px;">
+            <strong>Ingredientes registrados:</strong>
+            ${registro.ingredientes.join(', ')}
+          </p>
+
+          <div class="reco-grid">
+
+            ${recomendaciones.map(r => `
+
+              <div class="reco-card">
+
+                <div class="reco-card-img">
+                  ${r.emoji}
+                </div>
+
+                <div class="reco-card-body">
+
+                  <div class="reco-card-name">
+                    ${r.nombre_plato}
+                  </div>
+
+                  <div class="reco-precio">
+                    S/${r.precio}
+                  </div>
+
+                  <p style="margin-top:10px;">
+                    Compatibilidad:
+                    ${Math.round(r.score_final * 100)}%
+                  </p>
+
+                </div>
+
+              </div>
+
+            `).join('')}
+
+          </div>
+
+        </div>
+
+      `;
+
+    }).join('');
+
 }
 
-generarRecomendaciones();
+generarHistorial();

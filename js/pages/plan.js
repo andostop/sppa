@@ -1,55 +1,83 @@
 import { Auth } from '../auth.js';
-import { SPPA_Model } from '../model.js';
 
 const formPlan = document.getElementById('formPlan');
 const formDiario = document.getElementById('formDiario');
+const btnEditar = document.getElementById('btnEditarPlan');
 
 // ==========================
-// ESTADO INICIAL
+// SESION
+// ==========================
+const user = Auth.getSesion();
+
+// ==========================
+// SI YA EXISTE PLAN
 // ==========================
 if (Auth.tienePlan()) {
+
   formPlan.style.display = 'none';
   formDiario.style.display = 'block';
-} else {
-  formPlan.style.display = 'block';
-  formDiario.style.display = 'none';
+  btnEditar.style.display = 'inline-flex';
+
 }
 
 // ==========================
-// GUARDAR PLAN PRINCIPAL
+// EDITAR PLAN
+// ==========================
+btnEditar.addEventListener('click', () => {
+
+  const plan = Auth.getSesion().plan_alimenticio;
+
+  if (!plan) return;
+
+  // ==========================
+  // TOGGLE MOSTRAR / OCULTAR
+  // ==========================
+  const visible =
+    formPlan.style.display === 'block';
+
+  formPlan.style.display =
+    visible ? 'none' : 'block';
+
+  // ==========================
+  // SI SE ESTÁ MOSTRANDO
+  // ==========================
+  if (!visible) {
+
+    Object.keys(plan).forEach(key => {
+
+      const input =
+        formPlan.querySelector(`[name="${key}"]`);
+
+      if (input) {
+        input.value = plan[key];
+      }
+
+    });
+
+  }
+
+});
+
+// ==========================
+// GUARDAR PLAN
 // ==========================
 formPlan.addEventListener('submit', e => {
 
   e.preventDefault();
 
-  const data = Object.fromEntries(new FormData(formPlan));
+  const data = Object.fromEntries(
+    new FormData(formPlan)
+  );
 
-  // =========================================
-  // GUARDAR EN PLAN + PERFIL USUARIO
-  // =========================================
   Auth.actualizarSesion({
-    plan_alimenticio: data,
-
-    // datos importantes para recomendaciones
-    edad: data.edad,
-    sexo: data.sexo,
-    peso: data.peso,
-    altura: data.altura,
-    tipo_dieta: data.tipo_dieta,
-    region: data.region,
-    preferencia_comida: data.preferencia_comida,
-    alergias_salud: data.alergias_salud,
-    presupuesto_dia: data.presupuesto_dia,
-    objetivo: data.objetivo
+    plan_alimenticio: data
   });
 
-  alert('Plan alimenticio guardado');
+  alert('Plan guardado correctamente');
 
-  // =========================================
-  // MOSTRAR SOLO FORM DIARIO
-  // =========================================
   formPlan.style.display = 'none';
   formDiario.style.display = 'block';
+  btnEditar.style.display = 'inline-flex';
 
 });
 
@@ -62,71 +90,33 @@ formDiario.addEventListener('submit', e => {
 
   const fecha = document.getElementById('fechaDia').value;
 
-  const presupuesto = document
-    .getElementById('presupuestoDia')
-    .value;
+  const presupuesto =
+    document.getElementById('presupuestoDia').value;
 
-  const ingredientes = document
-    .getElementById('ingredientesDia')
+  const ingredientes =
+    document.getElementById('ingredientesDia')
     .value
     .split(',')
     .map(i => i.trim().toLowerCase())
     .filter(i => i);
 
-  const user = Auth.getSesion();
-
-  // =========================================
-  // GENERAR RECOMENDACIONES
-  // =========================================
-  const recomendaciones = SPPA_Model
-    .recomendar(user)
-    .map(plato => {
-
-      const matchIngredientes = plato.ingredientes.filter(i =>
-        ingredientes.some(userIng =>
-          userIng.includes(i)
-        )
-      ).length;
-
-      return {
-        ...plato,
-        score_final: plato.prob + (matchIngredientes * 0.08)
-      };
-
-    })
-    .sort((a,b) => b.score_final - a.score_final)
-    .slice(0, 5);
-
-  // =========================================
-  // NUEVO REGISTRO
-  // =========================================
   const nuevoRegistro = {
     fecha,
     presupuesto,
-    ingredientes,
-    recomendaciones
+    ingredientes
   };
 
-  // =========================================
-  // HISTORIAL
-  // =========================================
   const historial = user.registros_diarios || [];
 
-  // más reciente arriba
-  historial.unshift(nuevoRegistro);
+  historial.push(nuevoRegistro);
 
-  // =========================================
-  // GUARDAR
-  // =========================================
   Auth.actualizarSesion({
     registros_diarios: historial
   });
 
-  alert('Registro diario guardado');
+  alert('Registro guardado');
 
-  // =========================================
-  // REDIRECCIÓN
-  // =========================================
-  window.location.href = 'recomendaciones.html';
+  window.location.href =
+    'recomendaciones.html';
 
 });

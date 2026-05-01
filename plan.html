@@ -18,6 +18,18 @@
     <p class="dash-greeting">Personaliza tu alimentación según tu perfil</p>
   </div>
 
+  <div style="margin-bottom:20px;">
+
+  <button
+    id="btnEditarPlan"
+    class="btn btn-secondary"
+    style="display:none;"
+  >
+    Editar plan
+  </button>
+
+</div>
+
   <div class="card">
 
     <form id="formPlan">
@@ -28,7 +40,7 @@
       <div class="form-row">
         <div class="form-group">
           <label class="form-label">Edad</label>
-          <input type="number" name="edad" class="form-control" required>
+          <input type="number" name="edad" class="form-control" min="0" required>
         </div>
 
         <div class="form-group">
@@ -43,12 +55,12 @@
       <div class="form-row">
         <div class="form-group">
           <label class="form-label">Peso (kg)</label>
-          <input type="number" name="peso" class="form-control">
+          <input type="number" name="peso" class="form-control" min="0">
         </div>
 
         <div class="form-group">
           <label class="form-label">Altura (cm)</label>
-          <input type="number" name="altura" class="form-control">
+          <input type="number" name="altura" class="form-control" min="0">
         </div>
       </div>
 
@@ -96,7 +108,7 @@
 
       <div class="form-group">
         <label class="form-label">Presupuesto diario (S/)</label>
-        <input type="number" name="presupuesto_dia" class="form-control" required>
+        <input type="number" name="presupuesto_dia" class="form-control" min="0" required>
       </div>
 
       <!-- ================= OBJETIVO ================= -->
@@ -130,7 +142,7 @@
 
   <div class="form-group">
     <label class="form-label">Presupuesto del día</label>
-    <input type="number" id="presupuestoDia" class="form-control" required>
+    <input type="number" id="presupuestoDia" class="form-control" min="0" required>
   </div>
 
   <div class="form-group">

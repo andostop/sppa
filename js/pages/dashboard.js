@@ -34,10 +34,31 @@ function contarIngredientes(data){
   return count;
 }
 
+function contarPlatos(data){
+
+  const count = {};
+
+  data.forEach(r => {
+
+    const platos =
+      r.recomendaciones || [];
+
+    platos.forEach(p => {
+
+      count[p] = (count[p] || 0) + 1;
+
+    });
+
+  });
+
+  return count;
+
+}
 // =========================================
 // SEMANAL
 // =========================================
 const semanalCount = contarIngredientes(semana);
+const semanalPlatos = contarPlatos(semana);
 
 new Chart(document.getElementById('chartSemanaBar'), {
 
@@ -63,9 +84,9 @@ new Chart(document.getElementById('chartSemanaPie'), {
   type: 'pie',
 
   data: {
-    labels: Object.keys(semanalCount),
+    labels: Object.keys(semanalPlatos),
     datasets: [{
-      data: Object.values(semanalCount)
+      data: Object.values(semanalPlatos)
     }]
   },
 
@@ -80,6 +101,7 @@ new Chart(document.getElementById('chartSemanaPie'), {
 // MENSUAL
 // =========================================
 const mensualCount = contarIngredientes(mes);
+const mensualPlatos = contarPlatos(mes);
 
 new Chart(document.getElementById('chartMesBar'), {
 
@@ -105,9 +127,9 @@ new Chart(document.getElementById('chartMesPie'), {
   type: 'pie',
 
   data: {
-    labels: Object.keys(mensualCount),
+    labels: Object.keys(mensualPlatos),
     datasets: [{
-      data: Object.values(mensualCount)
+      data: Object.values(mensualPlatos)
     }]
   },
 
