@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Registro - SPPA</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body class="auth-page">
+
+<div id="navbar" class="navbar"></div>
+
+<div class="auth-container">
+
+  <div class="auth-logo">
+    <div class="logo-big">🌿</div>
+    <h2>Crear cuenta</h2>
+    <p>Registra tu perfil alimentario</p>
+  </div>
+
+  <form id="formRegistro">
+
+    <div class="form-group">
+      <label class="form-label">Nombre</label>
+      <input type="text" name="nombre" class="form-control" required>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Correo</label>
+      <input type="email" name="email" class="form-control" required>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Contraseña</label>
+      <input type="password" name="password" class="form-control" required>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Edad</label>
+        <input type="number" name="edad" class="form-control">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Región</label>
+        <select name="region" class="form-control">
+          <option value="costa">Costa</option>
+          <option value="sierra">Sierra</option>
+          <option value="selva">Selva</option>
+        </select>
+      </div>
+    </div>
+
+    <button class="btn btn-primary btn-full">Registrarme</button>
+
+  </form>
+
+</div>
+
+<script type="module">
+  import { renderNavbar } from './js/ui.js';
+  renderNavbar('index.html');
+</script>
+<script type="module" src="js/app.js"></script>
+<script type="module" src="js/pages/registro.js"></script>
+
+</body>
+</html>

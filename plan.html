@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Plan Alimenticio - SPPA</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+
+<div id="navbar" class="navbar"></div>
+
+<div class="page-wrapper">
+<div class="container">
+
+  <div class="dash-header">
+    <h2>Configurar Plan Alimenticio</h2>
+    <p class="dash-greeting">Personaliza tu alimentación según tu perfil</p>
+  </div>
+
+  <div class="card">
+
+    <form id="formPlan">
+
+      <!-- ================= DATOS PRINCIPALES ================= -->
+      <h3 style="margin-bottom:16px;">👤 Datos personales</h3>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Edad</label>
+          <input type="number" name="edad" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Sexo</label>
+          <select name="sexo" class="form-control">
+            <option value="masculino">Masculino</option>
+            <option value="femenino">Femenino</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Peso (kg)</label>
+          <input type="number" name="peso" class="form-control">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Altura (cm)</label>
+          <input type="number" name="altura" class="form-control">
+        </div>
+      </div>
+
+      <!-- ================= DIETA ================= -->
+      <h3 style="margin:24px 0 16px;">🥗 Preferencias alimentarias</h3>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Tipo de dieta</label>
+          <select name="tipo_dieta" class="form-control">
+            <option value="normal">Normal</option>
+            <option value="saludable">Saludable</option>
+            <option value="alta_proteina">Alta proteína</option>
+            <option value="vegetariano">Vegetariano</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Región</label>
+          <select name="region" class="form-control">
+            <option value="costa">Costa</option>
+            <option value="sierra">Sierra</option>
+            <option value="selva">Selva</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Preferencias de comida</label>
+        <input type="text" name="preferencia_comida" class="form-control"
+          placeholder="Ej: ceviche, pollo, ensalada">
+      </div>
+
+      <!-- ================= SALUD ================= -->
+      <h3 style="margin:24px 0 16px;">⚕️ Salud</h3>
+
+      <div class="form-group">
+        <label class="form-label">Alergias</label>
+        <input type="text" name="alergias_salud" class="form-control"
+          placeholder="Ej: mariscos, maní">
+      </div>
+
+      <!-- ================= ECONOMÍA ================= -->
+      <h3 style="margin:24px 0 16px;">💰 Presupuesto</h3>
+
+      <div class="form-group">
+        <label class="form-label">Presupuesto diario (S/)</label>
+        <input type="number" name="presupuesto_dia" class="form-control" required>
+      </div>
+
+      <!-- ================= OBJETIVO ================= -->
+      <h3 style="margin:24px 0 16px;">🎯 Objetivo</h3>
+
+      <div class="form-group">
+        <select name="objetivo" class="form-control">
+          <option value="mantener">Mantener peso</option>
+          <option value="bajar">Bajar de peso</option>
+          <option value="subir">Subir masa muscular</option>
+        </select>
+      </div>
+
+      <!-- ================= BOTÓN ================= -->
+      <button class="btn btn-primary btn-full" style="margin-top:20px;">
+        Guardar plan y generar recomendaciones →
+      </button>
+
+    </form>
+
+    <hr style="margin:30px 0">
+
+<form id="formDiario" style="display:none;">
+
+  <h3>📅 Registro Diario</h3>
+
+  <div class="form-group">
+    <label class="form-label">Fecha</label>
+    <input type="date" id="fechaDia" class="form-control" required>
+  </div>
+
+  <div class="form-group">
+    <label class="form-label">Presupuesto del día</label>
+    <input type="number" id="presupuestoDia" class="form-control" required>
+  </div>
+
+  <div class="form-group">
+    <label class="form-label">Ingredientes disponibles</label>
+    <input type="text" id="ingredientesDia" class="form-control"
+      placeholder="Ej: pollo, arroz, tomate">
+  </div>
+
+  <button class="btn btn-primary btn-full">
+    Generar recomendación →
+  </button>
+
+</form>
+
+  </div>
+
+</div>
+</div>
+
+<script type="module">
+  import { renderNavbar } from './js/ui.js';
+  renderNavbar('index.html');
+</script>
+<script type="module" src="js/app.js"></script>
+<script type="module" src="js/pages/plan.js"></script>
