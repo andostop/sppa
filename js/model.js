@@ -35,7 +35,8 @@ export const SPPA_Model = {
 
     return {
       ...plato,
-      probabilidad_aceptacion: Math.min(0.99, score)
+      probabilidad_aceptacion:
+        Math.min(0.99, score + (Math.random() * 0.1))
     };
 
   })

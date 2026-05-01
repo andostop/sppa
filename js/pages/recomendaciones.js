@@ -21,7 +21,7 @@ function generarRecomendaciones() {
 
     return {
       ...plato,
-      score_final: plato.prob + (match * 0.05)
+      score_final: plato.probabilidad_aceptacion + (match * 0.05)
     };
   })
   .sort((a,b)=>b.score_final - a.score_final)
