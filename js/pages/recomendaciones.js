@@ -1,7 +1,8 @@
 import { Auth } from '../auth.js';
 import { SPPA_Model } from '../model.js';
 
-const user = Auth.getSesion();
+//const user = Auth.getSesion();
+const getUser = () => Auth.getSesion();
 
 const cont =
   document.getElementById('recoContainer');
@@ -11,8 +12,8 @@ const cont =
 // =====================================
 function formatearFecha(fecha) {
 
-  const f = new Date(fecha);
-
+  const [year, month, day] = fecha.split("-");
+  const f = new Date(year, month - 1, day);
   return f.toLocaleDateString('es-PE', {
     day: 'numeric',
     month: 'long',
@@ -26,11 +27,9 @@ function formatearFecha(fecha) {
 // =====================================
 function generarHistorial() {
 
-  if (
-    !user ||
-    !user.registros_diarios ||
-    user.registros_diarios.length === 0
-  ) {
+  const user = Auth.getSesion(); // SIEMPRE fresco
+
+  if (!user?.registros_diarios?.length) {
 
     cont.innerHTML = `
       <div class="empty-state">
@@ -42,75 +41,45 @@ function generarHistorial() {
     return;
   }
 
-  // MÁS RECIENTE ARRIBA
-  const registros =
-    [...user.registros_diarios]
-    .reverse();
+  const registros = [...user.registros_diarios].reverse();
 
-  cont.innerHTML =
-    registros.map(registro => {
+  cont.innerHTML = registros.map(registro => {
 
-      // recomendaciones del día
-      const recomendaciones =
-        SPPA_Model
-          .recomendarPorRegistro(
-            user,
-            registro
-          )
-          .slice(0,3);
+    const recomendaciones = SPPA_Model
+      .recomendarPorRegistro(user, registro)
+      .slice(0, 3);
 
-      return `
+    return `
+      <div class="card" style="margin-bottom:24px;">
 
-        <div class="card" style="margin-bottom:24px;">
+        <h3>📅 ${formatearFecha(registro.fecha)}</h3>
 
-          <h3 style="margin-bottom:12px;">
-            📅 ${formatearFecha(registro.fecha)}
-          </h3>
+        <p>
+          <strong>Ingredientes:</strong>
+          ${registro.ingredientes.join(', ')}
+        </p>
 
-          <p style="margin-bottom:18px;">
-            <strong>Ingredientes registrados:</strong>
-            ${registro.ingredientes.join(', ')}
-          </p>
+        <div class="reco-grid">
 
-          <div class="reco-grid">
+          ${recomendaciones.map(r => `
+            <div class="reco-card">
+              <div class="reco-card-img">${r.emoji}</div>
 
-            ${recomendaciones.map(r => `
-
-              <div class="reco-card">
-
-                <div class="reco-card-img">
-                  ${r.emoji}
-                </div>
-
-                <div class="reco-card-body">
-
-                  <div class="reco-card-name">
-                    ${r.nombre_plato}
-                  </div>
-
-                  <div class="reco-precio">
-                    S/${r.precio}
-                  </div>
-
-                  <p style="margin-top:10px;">
-                    Compatibilidad:
-                    ${Math.round(r.score_final * 100)}%
-                  </p>
-
-                </div>
-
+              <div class="reco-card-body">
+                <div class="reco-card-name">${r.nombre_plato}</div>
+                <div>S/${r.precio}</div>
+                <p>Compatibilidad: ${Math.round(r.score_final * 100)}%</p>
               </div>
 
-            `).join('')}
-
-          </div>
+            </div>
+          `).join('')}
 
         </div>
 
-      `;
+      </div>
+    `;
 
-    }).join('');
-
+  }).join('');
 }
 
 generarHistorial();

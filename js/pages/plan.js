@@ -106,7 +106,7 @@ formDiario.addEventListener('submit', e => {
     ingredientes
   };
 
-  const historial = user.registros_diarios || [];
+  const historial = Auth.getSesion().registros_diarios || [];
 
   historial.push(nuevoRegistro);
 
